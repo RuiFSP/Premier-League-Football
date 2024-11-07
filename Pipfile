@@ -10,6 +10,7 @@ notebook = "*"
 matplotlib = "*"
 seaborn = "*"
 scikit-learn = "*"
+xgboost = "*"
 
 [dev-packages]
 ipykernel = "*"
