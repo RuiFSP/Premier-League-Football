@@ -13,12 +13,12 @@ xgboost = "*"
 joblib = "*"
 
 [dev-packages]
-ipykernel = "*"
 matplotlib = "*"
 seaborn = "*"
 notebook = "*"
 statsmodels = "*"
 numpy = "*"
+ipykernel = "*"
 
 [requires]
 python_version = "3.12"
