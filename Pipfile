@@ -12,6 +12,7 @@ seaborn = "*"
 scikit-learn = "*"
 xgboost = "*"
 statsmodels = "*"
+flask = "*"
 
 [dev-packages]
 ipykernel = "*"
