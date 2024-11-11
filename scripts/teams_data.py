@@ -70,13 +70,13 @@ def get_teams_data(home_team, away_team, date):
     home_stats = df_home_stats[home_stats_columns].copy()
     away_stats = df_away_stats[away_stats_columns].copy()
     
-    print(home_stats)
+    #print(home_stats)
     
     # Filter rows for specific teams in home_stats and away_stats
     home_team_data = home_stats[home_stats['home_team'] == home_team]
     away_team_data = away_stats[away_stats['away_team'] == away_team]
     
-    print(home_team_data)
+    #print(home_team_data)
 
     # get day_of_week and month from the date
     date = pd.to_datetime(date)
