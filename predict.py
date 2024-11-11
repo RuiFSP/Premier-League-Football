@@ -1,6 +1,7 @@
 import joblib
 import os
 import pandas as pd
+from io import StringIO
 from scripts.teams_data import get_teams_data
 
 from flask import Flask, request, jsonify
@@ -28,11 +29,9 @@ def predict():
     
     # Get the teams data
     data_json = get_teams_data(input['home_team'], input['away_team'], input['date']).to_json(orient='records')
-    
-    print(data_json)
 
     # Convert JSON string to dictionary
-    data = pd.read_json(data_json, orient='records')
+    data = pd.read_json(StringIO(data_json), orient='records')
 
     # Validate input data
     if not isinstance(data, pd.DataFrame):
