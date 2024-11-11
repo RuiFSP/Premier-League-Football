@@ -38,9 +38,9 @@ def predict():
     
     # show information in dictionary format with prediction andprobability
     prediction_prob_df = {
-        'Prob_Away_Win': round(float(prob[0][0]),3),
-        'Prob_Draw': round(float(prob[0][1]),3),
-        'Prob_Home_Win': round(float(prob[0][2]),3),
+        'Prob_Away_Win': round(float(probabilies [0][0]),3),
+        'Prob_Draw': round(float(probabilies [0][1]),3),
+        'Prob_Home_Win': round(float(probabilies [0][2]),3),
         'Team_to_Win': result_dict[raw_prediction]
     }
     
