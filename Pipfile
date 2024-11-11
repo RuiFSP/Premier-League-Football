@@ -6,17 +6,18 @@ name = "pypi"
 [packages]
 requests = "*"
 scikit-learn = "*"
-xgboost = "*"
 flask = "*"
 gunicorn = "*"
+pandas = "*"
+xgboost = "*"
 
 [dev-packages]
 ipykernel = "*"
 matplotlib = "*"
 seaborn = "*"
 notebook = "*"
-pandas = "*"
 statsmodels = "*"
+numpy = "*"
 
 [requires]
 python_version = "3.12"
