@@ -6,8 +6,12 @@
   - [Table of Contents](#table-of-contents)
   - [Problem Description](#problem-description)
   - [Data](#data)
-    - [Raw Data](#raw-data)
-    - [Enriched Data](#enriched-data)
+  - [Notebooks](#notebooks)
+    - [01-data\_gathering](#01-data_gathering)
+    - [02-data\_preparation](#02-data_preparation)
+    - [03-eda](#03-eda)
+    - [04-train\_model](#04-train_model)
+    - [05-back\_testing](#05-back_testing)
   - [Using the Project Locally](#using-the-project-locally)
     - [Running Docker](#running-docker)
     - [Testing the Model](#testing-the-model)
@@ -16,6 +20,7 @@
     - [Prediction](#prediction)
     - [Back Testing](#back-testing)
     - [Contributing](#contributing)
+  - [License](#license)
 
 ## Problem Description
 
@@ -25,62 +30,59 @@ As a long-time enthusiast of sports analytics and the mathematics of gambling, I
 
 The raw data for this project is sourced from [Football Data](https://www.football-data.co.uk/data.php). The focus is exclusively on the Premier League, covering seasons from 2005/2006 to 2024/2025. The raw data files can be found [here](https://github.com/RuiFSP/mlzoomcamp2024-midterm-project/tree/main/data/raw_data).
 
-### Raw Data
 
-The raw data includes the following fields:
+## Notebooks
 
-- Date: Match Date (dd/mm/yy)
-- Time: Time of match kick-off
-- HomeTeam: Home Team
-- AwayTeam: Away Team
-- FTHG: Full Time Home Team Goals
-- FTAG: Full Time Away Team Goals
-- FTR: Full Time Result (H=Home Win, D=Draw, A=Away Win)
-- HTHG: Half Time Home Team Goals
-- HTAG: Half Time Away Team Goals
-- HTR: Half Time Result (H=Home Win, D=Draw, A=Away Win)
-- Referee: Match Referee
-- HS: Home Team Shots
-- AS: Away Team Shots
-- HST: Home Team Shots on Target
-- AST: Away Team Shots on Target
-- HHW: Home Team Hit Woodwork
-- AHW: Away Team Hit Woodwork
-- HC: Home Team Corners
-- AC: Away Team Corners
-- HF: Home Team Fouls Committed
-- AF: Away Team Fouls Committed
-- HFKC: Home Team Free Kicks Conceded
-- AFKC: Away Team Free Kicks Conceded
-- HO: Home Team Offsides
-- AO: Away Team Offsides
-- HY: Home Team Yellow Cards
-- AY: Away Team Yellow Cards
-- HR: Home Team Red Cards
-- AR: Away Team Red Cards
-- B365H: Bet365 home win odds
-- B365D: Bet365 draw odds
-- B365A: Bet365 away win odds
-- Season: Data season
+### 01-data_gathering
 
-### Enriched Data
 
-- Goal Differences
-  - Calculated as the difference between home team goals and away team goals.
-- Aggregated Match Statistics
-  - Includes total shots, shots on target, fouls, and corners for both teams.
-  - Shot accuracy for both home and away teams.
-- Time-Based Features
-  - Date features such as day of the week and month.
-  - Sinusoidal transformations for cyclical features like day of the week and month.
-- Team-Based Features
-  - Ratios of shots and fouls between home and away teams.
-- Betting Odds-Based Features
-  - Implied probabilities of home win, draw, and away win based on betting odds.
-- Rolling Averages for Features
-  - Rolling averages for various match statistics over a specified number of previous games.
-- Cumulative Points
-  - Cumulative points for home and away teams throughout the season.
+The '01-data_gathering.ipynb' notebook is responsible for gathering and processing football data from various seasons. Below are the key steps performed in the notebook:
+
+1. Importing Libraries: The notebook starts by importing necessary libraries such as requests, pandas, and os.
+2. Defining URLs and Paths: It defines the base URL for data sources and the local path for saving the data.
+3. Data Scraping: Loops through the specified seasons to download CSV files containing football match data.
+4. Data Checking: Verifies if all required columns are present in the downloaded data.
+5. Data Concatenation: Reads the CSV files, selects specific columns, and concatenates them into a single DataFrame.
+6. Saving Processed Data: The final concatenated DataFrame is saved as a CSV file for further analysis.
+
+### 02-data_preparation
+
+1. Importing Libraries: Import necessary libraries such as pandas, matplotlib, seaborn, os, numpy, and math.
+2. Reading Data: Load the dataset from a CSV file.
+3. Data Cleaning:
+   - Fix column names to be lowercase and replace spaces with underscores.
+   - Rename specific columns for better readability.
+   - Handle missing values by removing rows with NaN values.
+   - Check for duplicates and ensure data integrity.
+4. Feature Engineering:
+   - Create new features such as goal difference, total shots, shot accuracy, and time-based features.
+   - Calculate rolling averages for various statistics over 3 and 5 game windows.
+   - Compute cumulative points for home and away teams.
+   - Normalize betting odds to implied probabilities.
+5. Saving Processed Data:
+   - Save the processed data for the current season (2024/2025) to a CSV file.
+   - Save the final prepared dataset to a CSV file.
+
+### 03-eda
+
+The '03-eda.ipynb' notebook is dedicated to Exploratory Data Analysis (EDA). It includes the following key steps:
+
+1. Importing Libraries: Import necessary libraries such as pandas, numpy, matplotlib, seaborn, and statsmodels.
+2. Data Loading: Load the processed dataset for analysis.
+3. Data Checking: Check data types, missing values, unique values, duplicates, and outliers.
+4. Correlation Analysis: Identify highly correlated features using a correlation matrix.
+5. Variance Inflation Factor (VIF): Calculate VIF to check for multicollinearity and remove features with high VIF values.
+6. Cluster Maps: Plot clustered heatmaps to visualize feature correlations.
+7. Target Distribution: Visualize the distribution of the target variable.
+8. Saving Data: Save the cleaned and processed data for modeling and backtesting.
+
+### 04-train_model
+
+This notebook covers the process of training a machine learning model for predicting football match outcomes. It includes data preprocessing, feature selection using Recursive Feature Elimination with Cross-Validation (RFECV), and model evaluation using RandomForest and XGBoost classifiers. The notebook also demonstrates hyperparameter tuning to reduce overfitting and finalizes the best model using a pipeline. The final model is saved for future predictions.
+
+### 05-back_testing
+
+This notebook is dedicated to backtesting the trained model's performance on historical data. It includes loading the test data, making predictions, and evaluating the model's performance using metrics such as the Brier score. The notebook compares the model's predictions against market odds to assess its predictive power.
 
 ## Using the Project Locally
 
@@ -120,21 +122,24 @@ curl -X POST http://127.0.0.1:9696/predict \
          }'
 ```
 
-
 ### Model Training
 
 The model training process is implemented in the 'train.py' script. It includes data loading, preprocessing, feature selection, and model training using XGBoost. The final model pipeline is saved to the 'models' directory.
 
 ### Prediction
+
 The prediction process is implemented in the 'predict.py' script. It includes loading the trained model, validating input data, fetching team data, and making predictions.
 
 ### Back Testing
+
 Back testing is implemented in the 'notebooks/05-back_testing.ipynb' notebook. It includes loading test data, making predictions, and evaluating the model's performance.
 
 ### Contributing
+
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
-License
+## License
+
 This project is licensed under the MIT License.
 
 Feel free to customize this README file further to suit your project's specific needs.
