@@ -80,7 +80,7 @@ def create_final_pipeline(X_train_selected, y_train, preprocessor):
 # Main script
 if __name__ == "__main__":
     # Load and prepare data
-    data = load_data(os.path.join('data', 'processed', 'data_for_model.csv'))
+    data = load_data(os.path.join(os.path.dirname(__file__),'data', 'processed', 'data_for_model.csv'))
     
     # Encode target variable (convert strings to numeric labels)
     y = data['full_time_result']
@@ -109,10 +109,10 @@ if __name__ == "__main__":
     
     # Save column names for prediction
     column_names = X.columns
-    joblib.dump(column_names, os.path.join('models', 'column_names.pkl'))
+    joblib.dump(column_names, os.path.join(os.path.dirname(__file__),'models', 'column_names.pkl'))
     
     # Save dtypes for prediction
     dtypes = X.dtypes
-    joblib.dump(dtypes, os.path.join('models', 'dtypes.pkl'))
+    joblib.dump(dtypes, os.path.join(os.path.dirname(__file__),'models', 'dtypes.pkl'))
     
     logger.info("Final pipeline saved as 'final_model_pipeline.pkl'")

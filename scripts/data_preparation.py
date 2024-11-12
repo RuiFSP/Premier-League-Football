@@ -168,7 +168,7 @@ def main():
     df = df.dropna().reset_index(drop=True)
     df = feature_engineering(df)
     
-    save_data(df, os.path.join('data', 'processed', 'prepared_football_data.csv'))
+    save_data(df, os.path.join(os.path.dirname(__file__),'data', 'processed', 'prepared_football_data.csv'))
     
     teams_stats_2024 = df[df['season'] == 2024]
     save_data(teams_stats_2024, os.path.join('data', 'processed', 'teams_stats_2024.csv'))
