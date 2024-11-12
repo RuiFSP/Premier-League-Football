@@ -25,6 +25,7 @@ This project aims to predict the outcomes of Premier League football matches usi
       - [Install the Project Dependencies](#install-the-project-dependencies)
       - [Activate the Virtual Environment](#activate-the-virtual-environment)
     - [Running Docker](#running-docker)
+    - [Running the Streamlit App](#running-the-streamlit-app)
     - [Testing the Model](#testing-the-model)
     - [Usage](#usage)
     - [Contributing](#contributing)
@@ -164,6 +165,20 @@ Run the Docker container:
 
 ```bash
     docker run -it --rm -p 9696:9696 midterm-mlzoomcamp-project
+```
+
+### Running the Streamlit App
+
+To run the Streamlit app locally, follow these steps:
+
+1. Ensure you have all dependencies installed and the virtual environment activated as described in the [Installing Dependencies](#installing-dependencies) section.
+
+2. Navigate to the project directory where `app.py` is located.
+
+3. Run the Streamlit app using the following command:
+
+```bash
+    streamlit run app.py
 ```
 
 ### Testing the Model
