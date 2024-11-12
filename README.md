@@ -35,6 +35,7 @@ The raw data for this project is sourced from [Football Data](https://www.footba
 
 ### 01-data_gathering
 
+![Data Gathering](images/data_gathering.png)
 
 The '01-data_gathering.ipynb' notebook is responsible for gathering and processing football data from various seasons. Below are the key steps performed in the notebook:
 
@@ -46,6 +47,8 @@ The '01-data_gathering.ipynb' notebook is responsible for gathering and processi
 6. Saving Processed Data: The final concatenated DataFrame is saved as a CSV file for further analysis.
 
 ### 02-data_preparation
+
+![Data Preparation](images/data_preparation.png)
 
 1. Importing Libraries: Import necessary libraries such as pandas, matplotlib, seaborn, os, numpy, and math.
 2. Reading Data: Load the dataset from a CSV file.
@@ -65,6 +68,8 @@ The '01-data_gathering.ipynb' notebook is responsible for gathering and processi
 
 ### 03-eda
 
+![Exploratory Data Analysis](images/eda.png)
+
 The '03-eda.ipynb' notebook is dedicated to Exploratory Data Analysis (EDA). It includes the following key steps:
 
 1. Importing Libraries: Import necessary libraries such as pandas, numpy, matplotlib, seaborn, and statsmodels.
@@ -78,9 +83,13 @@ The '03-eda.ipynb' notebook is dedicated to Exploratory Data Analysis (EDA). It 
 
 ### 04-train_model
 
+![Model Training](images/train_model.png)
+
 This notebook covers the process of training a machine learning model for predicting football match outcomes. It includes data preprocessing, feature selection using Recursive Feature Elimination with Cross-Validation (RFECV), and model evaluation using RandomForest and XGBoost classifiers. The notebook also demonstrates hyperparameter tuning to reduce overfitting and finalizes the best model using a pipeline. The final model is saved for future predictions.
 
 ### 05-back_testing
+
+![Back Testing](images/back_testing.png)
 
 This notebook is dedicated to backtesting the trained model's performance on historical data. It includes loading the test data, making predictions, and evaluating the model's performance using metrics such as the Brier score. The notebook compares the model's predictions against market odds to assess its predictive power.
 
