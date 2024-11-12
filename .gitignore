@@ -165,3 +165,7 @@ cython_debug/
 
 # add obsolete folder to gitignore
 obsolete/
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

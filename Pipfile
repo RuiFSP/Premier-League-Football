@@ -12,6 +12,8 @@ pandas = "*"
 xgboost = "*"
 joblib = "*"
 streamlit = "*"
+awscli = "*"
+awsebcli = "==3.19.4"
 
 [dev-packages]
 matplotlib = "*"
