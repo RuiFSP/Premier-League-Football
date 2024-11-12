@@ -6,8 +6,8 @@ BASE_URL = "https://www.football-data.co.uk/mmz4281/{}/E0.csv"
 SEASONS = ["0506", "0607", "0708", "0809", "0910", "1011", "1112", "1213", "1314",
            "1415", "1516", "1617", "1718", "1819", "1920", "2021", "2122", "2223",
            "2324", "2425"]
-RAW_DATA_PATH = os.path.join("..", "data", "raw_data")
-PROCESSED_DATA_PATH = os.path.join("..", "data", "processed")
+RAW_DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "raw_data")
+PROCESSED_DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
 COLUMNS_TO_SELECT = ['Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'FTR',
                      'HTHG', 'HTAG', 'HTR', 'Referee', 'HS', 'AS', 'HST', 'AST',
                      'HF', 'AF', 'HC', 'AC', 'HY', 'AY', 'HR', 'AR', 'B365H', 'B365D', 'B365A']  # Valid column names
