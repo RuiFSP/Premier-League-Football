@@ -13,12 +13,16 @@
     - [04-train\_model](#04-train_model)
     - [05-back\_testing](#05-back_testing)
   - [Using the Project Locally](#using-the-project-locally)
+    - [Clone This repository](#clone-this-repository)
+      - [Clone the Repository](#clone-the-repository)
+      - [Navigate into the Project Directory](#navigate-into-the-project-directory)
+    - [Installing dependencies](#installing-dependencies)
+      - [Navigate to Your Project Directory](#navigate-to-your-project-directory)
+      - [Install the Project Dependencies](#install-the-project-dependencies)
+      - [Activate the Virtual Environment](#activate-the-virtual-environment)
     - [Running Docker](#running-docker)
     - [Testing the Model](#testing-the-model)
     - [Usage](#usage)
-    - [Model Training](#model-training)
-    - [Prediction](#prediction)
-    - [Back Testing](#back-testing)
     - [Contributing](#contributing)
   - [License](#license)
 
@@ -93,7 +97,75 @@ This notebook covers the process of training a machine learning model for predic
 
 This notebook is dedicated to backtesting the trained model's performance on historical data. It includes loading the test data, making predictions, and evaluating the model's performance using metrics such as the Brier score. The notebook compares the model's predictions against market odds to assess its predictive power.
 
+
 ## Using the Project Locally
+
+
+### Clone This repository
+
+#### Clone the Repository
+
+Use `git clone` to copy the repository to your local machine.
+
+```bash
+  git clone <repository-url>
+```
+
+Replace <repository-url> with the actual URL of the repository (for example, from GitHub, GitLab, etc.)
+
+```bash
+  git clone https://github.com/username/repository.git
+```
+
+This command creates a directory with the repository files. By default, the new directory name matches the repository name
+
+
+#### Navigate into the Project Directory
+
+After cloning, move into the newly created directory
+
+```bash
+  cd repository
+```
+
+Replace repository with the name of the actual cloned directory.
+
+
+### Installing dependencies
+
+#### Navigate to Your Project Directory
+
+First, open a terminal and change to the directory where your `Pipfile` and `Pipfile.lock` are located.
+
+```bash
+  cd /path/to/your/project
+```
+
+#### Install the Project Dependencies
+
+In the project directory, use `pipenv install` to create the virtual environment and install all dependencies specified in the `Pipfile.lock`.
+
+```bash
+  pipenv install
+```
+
+This command will:
+
+- Create a virtual environment if one doesn’t already exist.
+- Install the dependencies exactly as specified in the `Pipfile.lock`.
+
+
+#### Activate the Virtual Environment
+
+To activate the virtual environment, use:
+
+```bash
+  pipenv shell
+```
+
+Now you're in an isolated environment where the dependencies specified in the `Pipfile.lock` are installed
+
+
 
 ### Running Docker
 
@@ -130,18 +202,6 @@ curl -X POST http://127.0.0.1:9696/predict \
            "date": "2024-12-16"
          }'
 ```
-
-### Model Training
-
-The model training process is implemented in the 'train.py' script. It includes data loading, preprocessing, feature selection, and model training using XGBoost. The final model pipeline is saved to the 'models' directory.
-
-### Prediction
-
-The prediction process is implemented in the 'predict.py' script. It includes loading the trained model, validating input data, fetching team data, and making predictions.
-
-### Back Testing
-
-Back testing is implemented in the 'notebooks/05-back_testing.ipynb' notebook. It includes loading test data, making predictions, and evaluating the model's performance.
 
 ### Contributing
 
