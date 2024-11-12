@@ -46,12 +46,11 @@ The raw data for this project is sourced from [Football Data](https://www.footba
 
 The '01-data_gathering.ipynb' notebook is responsible for gathering and processing football data from various seasons. Below are the key steps performed in the notebook:
 
-1. Importing Libraries: The notebook starts by importing necessary libraries such as requests, pandas, and os.
-2. Defining URLs and Paths: It defines the base URL for data sources and the local path for saving the data.
-3. Data Scraping: Loops through the specified seasons to download CSV files containing football match data.
-4. Data Checking: Verifies if all required columns are present in the downloaded data.
-5. Data Concatenation: Reads the CSV files, selects specific columns, and concatenates them into a single DataFrame.
-6. Saving Processed Data: The final concatenated DataFrame is saved as a CSV file for further analysis.
+1. Defining URLs and Paths: It defines the base URL for data sources and the local path for saving the data.
+2. Data Scraping: Loops through the specified seasons to download CSV files containing football match data.
+3. Data Checking: Verifies if all required columns are present in the downloaded data.
+4. Data Concatenation: Reads the CSV files, selects specific columns, and concatenates them into a single DataFrame.
+5. Saving Processed Data: The final concatenated DataFrame is saved as a CSV file for further analysis.
 
 ### 02-data_preparation
 

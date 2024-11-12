@@ -11,9 +11,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Path to the saved model and additional validation data
-path_model = os.path.join("models", "final_model_pipeline.pkl")
-path_column_names = os.path.join("models", "column_names.pkl")
-path_dtypes = os.path.join("models", "dtypes.pkl")
+path_model = os.path.join(os.path.dirname(__file__),"models", "final_model_pipeline.pkl")
+path_column_names = os.path.join(os.path.dirname(__file__),"models", "column_names.pkl")
+path_dtypes = os.path.join(os.path.dirname(__file__),"models", "dtypes.pkl")
 
 # Load the model with error handling
 try:
