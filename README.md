@@ -167,11 +167,14 @@ Run the Docker container:
     docker run -it --rm -p 9696:9696 midterm-mlzoomcamp-project
 ```
 
+> If you get an error with [ 5/11] RUN 'pipenv install --system --deploy', try to turnoff your VPN
+
+
 ### Testing the Model
 
 Open a new terminal and run the test script:
 
-```python
+```bash
     python tests/test_predict.py    
 ```
 
