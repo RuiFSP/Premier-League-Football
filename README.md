@@ -11,13 +11,13 @@ This project aims to predict the outcomes of Premier League football matches usi
   - [Table of Contents](#table-of-contents)
   - [Problem Description](#problem-description)
   - [Data](#data)
-  - [Notebooks](#notebooks)
+  - [Scripts](#scripts)
     - [01\_data\_gathering](#01_data_gathering)
-    - [02-data\_preparation](#02-data_preparation)
+    - [02\_data\_preparation](#02_data_preparation)
     - [03\_eda](#03_eda)
     - [04\_train\_model](#04_train_model)
     - [05\_back\_testing](#05_back_testing)
-  - [Using the Project Locally](#using-the-project-locally)
+  - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Clone the Repository](#clone-the-repository)
     - [Installing Dependencies](#installing-dependencies)
@@ -26,77 +26,101 @@ This project aims to predict the outcomes of Premier League football matches usi
       - [Activate the Virtual Environment](#activate-the-virtual-environment)
     - [Running Docker](#running-docker)
     - [Testing the Model](#testing-the-model)
-    - [Usage](#usage)
     - [Running the Streamlit App (Bonus)](#running-the-streamlit-app-bonus)
-    - [Contributing](#contributing)
+  - [Contributing](#contributing)
   - [License](#license)
+  - [Contact](#contact)
 
 ## Problem Description
 
-Predicting the outcomes of football matches has always been a challenging yet fascinating task for sports analysts and enthusiasts. This project focuses on the Premier League, aiming to build robust machine learning models to forecast match results—whether it’s a home win, draw, or away win. By leveraging historical match data, team statistics, and betting odds, the project seeks to identify key features that influence match outcomes. Despite the inherent unpredictability and dynamic nature of sports betting markets, this project aspires to provide valuable insights and potentially profitable predictions.
+Predicting the outcomes of football matches has always been a challenging yet fascinating task for sports analysts and enthusiasts. This project focuses on the Premier League, aiming to build robust machine learning models to forecast match results—whether it’s a home win, draw, or away win. By leveraging historical match data and team statistics, the project seeks to identify key features that influence match outcomes. Despite the inherent unpredictability and dynamic nature of sports betting markets, this project aspires to provide valuable insights and potentially profitable predictions.
 
 ## Data
 
 The raw data for this project is sourced from [Football Data](https://www.football-data.co.uk/data.php). The focus is exclusively on the Premier League, covering seasons from 2005/2006 to 2024/2025. The raw data files can be found [here](https://github.com/RuiFSP/mlzoomcamp2024-midterm-project/tree/main/data/raw_data).
 
-## Notebooks
+For the last twenty years, the tendency has been for the home teams to win the majority of games, which is really common for this type of sport because there is always an associated home factor.
+
+![FRT](images/ftr_season.png)
+
+## Scripts
 
 ### 01_data_gathering
 
-![Data Gathering](images/data_gathering.png)
+During data gathering, the following key steps are performed:
 
-The '01-data_gathering.ipynb' notebook is responsible for gathering and processing football data from various seasons. Below are the key steps performed in the notebook:
+The `data_gathering` function in the `01_data_gathering.py` script encapsulates these steps. It ensures the necessary directories exist, downloads the CSV files for the specified seasons, checks the columns in the files, concatenates the data, and saves the processed data.
 
-1. Defining URLs and Paths: It defines the base URL for data sources and the local path for saving the data.
-2. Data Scraping: Loops through the specified seasons to download CSV files containing football match data.
-3. Data Checking: Verifies if all required columns are present in the downloaded data.
-4. Data Concatenation: Reads the CSV files, selects specific columns, and concatenates them into a single DataFrame.
-5. Saving Processed Data: The final concatenated DataFrame is saved as a CSV file for further analysis.
+For more details, see the [01_data_gathering.py](scripts/01_data_gathering.py) script.
 
-### 02-data_preparation
+### 02_data_preparation
 
-![Data Preparation](images/data_preparation.png)
+The `02_data_preparation.py` script performs the following key steps:
 
-1. Data Cleaning:
-   - Fix column names to be lowercase and replace spaces with underscores.
-   - Rename specific columns for better readability.
-   - Handle missing values by removing rows with NaN values.
-   - Check for duplicates and ensure data integrity.
-2. Feature Engineering:
-   - Create new features such as goal difference, total shots, shot accuracy, and time-based features.
-   - Calculate rolling averages for various statistics over 3 and 5 game windows.
-   - Compute cumulative points for home and away teams.
-   - Normalize betting odds to implied probabilities.
-3. Saving Processed Data:
-   - Save the processed data for the current season (2024/2025) to a CSV file.
-   - Save the final prepared dataset to a CSV file.
+1. **Data Cleaning**: Fix column names, handle missing values, and ensure data integrity.
+2. **Feature Engineering**: Create new features such as goal difference, total shots, shot accuracy, and time-based features.
+3. **Rolling Averages**: Calculate rolling averages for various statistics over 3 and 5 game windows.
+4. **Cumulative Points**: Compute cumulative points for home and away teams.
+5. **Normalize Betting Odds**: Convert betting odds to implied probabilities.
+6. **Save Processed Data**: Save the processed data for the current season (2024/2025) and the final prepared dataset to CSV files.
+
+For more details, see the [02_data_preparation.py](scripts/02_data_preparation.py) script.
 
 ### 03_eda
 
-![Exploratory Data Analysis](images/eda.png)
+The `03_data_eda.py` script is dedicated to Exploratory Data Analysis (EDA). It includes the following key steps:
 
-The '03-eda.ipynb' notebook is dedicated to Exploratory Data Analysis (EDA). It includes the following key steps:
+1. **Data Checking**: Check data types, missing values, unique values, duplicates, and outliers.
+2. **Correlation Analysis**: Identify highly correlated features using a correlation matrix.
+3. **Variance Inflation Factor (VIF)**: Calculate VIF to check for multicollinearity and remove features with high VIF values.
+4. **Cluster Maps**: Plot clustered heatmaps to visualize feature correlations.
+5. **Target Distribution**: Visualize the distribution of the target variable.
+6. **Saving Data**: Save the cleaned and processed data for modeling and backtesting.
 
-1. Data Checking: Check data types, missing values, unique values, duplicates, and outliers.
-2. Correlation Analysis: Identify highly correlated features using a correlation matrix.
-3. Variance Inflation Factor (VIF): Calculate VIF to check for multicollinearity and remove features with high VIF values.
-4. Cluster Maps: Plot clustered heatmaps to visualize feature correlations.
-5. Target Distribution: Visualize the distribution of the target variable.
-6. Saving Data: Save the cleaned and processed data for modeling and backtesting.
+For more details, see the [03_data_eda.py](scripts/03_data_eda.py) script.
 
 ### 04_train_model
 
-![Model Training](images/train_model.png)
+The `04_train_model.py` script covers the following key steps:
 
-This notebook covers the process of training a machine learning model for predicting football match outcomes. It includes data preprocessing, feature selection using Recursive Feature Elimination with Cross-Validation (RFECV), and model evaluation using RandomForest and XGBoost classifiers. The notebook also demonstrates hyperparameter tuning to reduce overfitting and finalizes the best model using a pipeline. The final model is saved for future predictions.
+- **Data Preprocessing**: Prepare the data for modeling.
+- **Feature Selection**: Use Recursive Feature Elimination with Cross-Validation (RFECV) to select important features.
+
+![rfccv_results](images/RFCCV.png)
+
+Check documentation about RFECV in: [Scikit_learn-RFECV](https://scikit-learn.org/1.5/modules/generated/sklearn.feature_selection.RFECV.html)
+
+![feature_importance](images/feature_importance.png)
+
+- **Model Evaluation**: Evaluate models using RandomForest and XGBoost classifiers.
+
+> For example, here the model was overfitting in training data
+
+![model_evaluation](images/learning_curves_xgboost_overfiting.png)
+
+- **Hyperparameter Tuning**: Tune hyperparameters to reduce overfitting.
+
+> After hyperparameter tuning we were able to decrease overfitting
+
+![hyperparameter_tuning](images/learning_curves_xgboost_tuning_improved.png)
+
+- **Model Finalization**: Finalize the best model using a pipeline and save it for future predictions.
+
+For more details, see the [04_train_model.py](scripts/04_train_model.py) script.
 
 ### 05_back_testing
 
-![Back Testing](images/back_testing.png)
+The `05_back_testing_market.py` script includes the following key steps:
 
-This notebook is dedicated to backtesting the trained model's performance on historical data. It includes loading the test data, making predictions, and evaluating the model's performance using metrics such as the Brier score. The notebook compares the model's predictions against market odds to assess its predictive power.
+- **Loading the Model and Data**: Load the trained model and test datasets.
+- **Making Predictions**: Generate predictions and prediction probabilities using the model.
+- **Preparing Data for Analysis**: Combine predictions with actual results and market probabilities.
+- **Calculating Brier Scores**: Compute Brier scores for both the model's predictions and the market probabilities.
+- **Comparing Performance**: Compare the average Brier scores of the model and the market.
 
-## Using the Project Locally
+For more details, see the [05_back_testing_market.py](scripts/05_back_testing_market.py) script.
+
+## Getting Started
 
 ### Prerequisites
 
@@ -158,17 +182,17 @@ Now you're in an isolated environment where the dependencies specified in the `P
 Build the Docker image:
 
 ```bash
-    docker build -t midterm-mlzoomcamp-project .
+    docker build -t <docker_image_name> .
 ```
 
 Run the Docker container:
 
 ```bash
-    docker run -it --rm -p 9696:9696 midterm-mlzoomcamp-project
+    docker run -it --rm -p 9696:9696 <docker_image_name>
 ```
 
-> If you get an error with [ 5/11] RUN 'pipenv install --system --deploy', try to turnoff your VPN
-
+> **Note:**  
+> If you get an error with `[ 5/11] RUN 'pipenv install --system --deploy'`, try turning off your VPN.
 
 ### Testing the Model
 
@@ -177,8 +201,6 @@ Open a new terminal and run the test script:
 ```bash
     python tests/test_predict.py    
 ```
-
-### Usage
 
 To use the prediction service, send a POST request to the /predict endpoint with the following JSON payload:
 
@@ -206,8 +228,9 @@ To run the Streamlit app locally, follow these steps:
     streamlit run app.py
 ```
 
+![streamlit_app](images/streamlit_example.PNG)
 
-### Contributing
+## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
@@ -215,4 +238,6 @@ Contributions are welcome! Please open an issue or submit a pull request for any
 
 This project is licensed under the MIT License.
 
-Feel free to customize this README file further to suit your project's specific needs.
+## Contact
+
+For any questions or support, please contact [ruifspinto@gmail.com]
