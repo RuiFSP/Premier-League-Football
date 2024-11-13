@@ -28,8 +28,6 @@ This project aims to predict the outcomes of Premier League football matches usi
     - [Testing the Model](#testing-the-model)
     - [Running the Streamlit App (Bonus)](#running-the-streamlit-app-bonus)
   - [Contributing](#contributing)
-  - [License](#license)
-  - [Contact](#contact)
 
 ## Problem Description
 
@@ -137,7 +135,7 @@ Use `git clone` to copy the repository to your local machine and navigate into t
   cd repository
 ```
 
-Replace <repository-url> with the actual URL of the repository (for example, from GitHub, GitLab, etc.)
+Replace `repository-url` with the actual URL of the repository (for example, from GitHub, GitLab, etc.)
 
 ```bash
   git clone https://github.com/username/repository.git
@@ -232,12 +230,4 @@ To run the Streamlit app locally, follow these steps:
 
 ## Contributing
 
-Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
-
-## License
-
-This project is licensed under the MIT License.
-
-## Contact
-
-For any questions or support, please contact [ruifspinto@gmail.com]
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes
