@@ -78,6 +78,8 @@ The `03_data_eda.py` script is dedicated to Exploratory Data Analysis (EDA). It 
 5. **Target Distribution**: Visualize the distribution of the target variable.
 6. **Saving Data**: Save the cleaned and processed data for modeling and backtesting.
 
+![cluster_heatmaps](images/clustered_hm_vif.png)
+
 For more details, see the [03_data_eda.py](scripts/03_data_eda.py) script.
 
 ### 04_train_model
@@ -118,6 +120,8 @@ The `05_back_testing_market.py` script includes the following key steps:
 - **Preparing Data for Analysis**: Combine predictions with actual results and market probabilities.
 - **Calculating Brier Scores**: Compute Brier scores for both the model's predictions and the market probabilities.
 - **Comparing Performance**: Compare the average Brier scores of the model and the market.
+
+![brier_score_differences](images/brier_score_diff.png)
 
 For more details, see the [05_back_testing_market.py](scripts/05_back_testing_market.py) script.
 
