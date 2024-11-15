@@ -96,6 +96,10 @@ if __name__ == "__main__":
     preprocessor = create_preprocessor(numerical_features, categorical_features)
     X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2, random_state=42, stratify=y_encoded)
     
+    # Save X_test and y_test as csv files
+    X_test.to_csv(os.path.join(os.path.dirname(__file__),'..','data', 'processed', 'X_test.csv'), index=False)
+    pd.DataFrame(y_test).to_csv(os.path.join(os.path.dirname(__file__),'..','data', 'processed', 'y_test.csv'), index=False)
+    
     # Create and evaluate the final model pipeline
     logger.info("Starting feature selection with RFECV...")
     final_pipeline = create_final_pipeline(X_train, y_train, preprocessor)

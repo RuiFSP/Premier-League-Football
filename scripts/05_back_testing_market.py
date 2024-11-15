@@ -1,8 +1,8 @@
-
 import pandas as pd
 import numpy as np
 import joblib
 import os
+from sklearn.metrics import brier_score_loss
 
 def load_model(model_path):
     return joblib.load(model_path)
@@ -23,13 +23,15 @@ def prepare_team_names(X_test, y_test, y_pred, y_pred_proba, data_for_back_testi
     return team_names
 
 def encode_result(result):
-    if result == 'H':
+    # 'H' = [1, 0, 0], 'D' = [0, 1, 0], 'A' = [0, 0, 1]
+    if result == 2:
         return [1, 0, 0]
-    elif result == 'D':
+    elif result == 1:
         return [0, 1, 0]
-    elif result == 'A':
+    elif result == 0:
         return [0, 0, 1]
 
+# Encode predicted_results to H, D, A
 def decode_result(result):
     if result == 2:
         return 'H'
@@ -39,12 +41,25 @@ def decode_result(result):
         return 'A'
 
 def calculate_brier_score(predictions, true_outcome):
-    return np.mean((predictions - true_outcome) ** 2)
+    return brier_score_loss(true_outcome, predictions)
 
 def calculate_brier_scores(team_names):
     team_names['true_predictions_brier'] = team_names['true_results'].apply(encode_result)
-    team_names['brier_score_market'] = team_names.apply(lambda row: calculate_brier_score(np.array([row['home_prob'], row['draw_prob'], row['away_prob']]), row['true_predictions_brier']), axis=1)
-    team_names['brier_score_model'] = team_names.apply(lambda row: calculate_brier_score(np.array([row['implied_home_win_prob'], row['implied_draw_prob'], row['implied_away_win_prob']]), row['true_predictions_brier']), axis=1)
+
+    # Now calculate the Brier score for each row using the predicted probabilities
+    team_names['brier_score_market'] = team_names.apply(
+        lambda row: calculate_brier_score(np.array([row['home_prob'], row['draw_prob'], row['away_prob']]), row['true_predictions_brier']),
+        axis=1
+    )
+
+    # Calculate the Brier score for the model
+    team_names['brier_score_model'] = team_names.apply(
+        lambda row: calculate_brier_score(np.array([row['implied_home_win_prob'], row['implied_draw_prob'], row['implied_away_win_prob']]), row['true_predictions_brier']),
+        axis=1
+    )
+    
+    team_names['predicted_results'] = team_names['predicted_results'].apply(decode_result)
+    
     return team_names
 
 def main():
@@ -57,6 +72,7 @@ def main():
 
     model = load_model(model_path)
     X_test, y_test, data_for_back_testing = load_data(data_paths)
+    y_test = y_test.squeeze()  # Ensure y_test is a Series
     y_pred, y_pred_proba = make_predictions(model, X_test)
     
     team_names = prepare_team_names(X_test, y_test, y_pred, y_pred_proba, data_for_back_testing)
@@ -68,7 +84,6 @@ def main():
     
     print(f"Average Brier Score Market: {average_brier_score_market}")
     print(f"Average Brier Score Model: {average_brier_score_model}")
-    print(team_names[['home_team', 'away_team', 'true_results', 'predicted_results', 'brier_score_model', 'brier_score_market']])
 
 if __name__ == "__main__":
     main()
