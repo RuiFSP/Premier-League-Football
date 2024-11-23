@@ -26,8 +26,7 @@ This project aims to predict the outcomes of Premier League football matches usi
       - [Activate the Virtual Environment](#activate-the-virtual-environment)
     - [Running Docker](#running-docker)
     - [Running on AWS Elastic Beanstalk](#running-on-aws-elastic-beanstalk)
-      - [Running Locally](#running-locally)
-      - [Running Remotely](#running-remotely)
+      - [Troubleshooting](#troubleshooting)
     - [Testing the Model](#testing-the-model)
     - [Running the Streamlit App (Bonus)](#running-the-streamlit-app-bonus)
   - [Contributing](#contributing)
@@ -201,9 +200,7 @@ Run the Docker container:
 
 ### Running on AWS Elastic Beanstalk
 
-#### Running Locally
-
-To run Elastic Beanstalk locally, follow these steps:
+To run Elastic Beanstalk, follow these steps:
 
 1. **Install the AWS Elastic Beanstalk CLI**:
    Ensure you have the AWS CLI and Elastic Beanstalk CLI installed. You can install the Elastic Beanstalk CLI using pip:
@@ -216,99 +213,88 @@ To run Elastic Beanstalk locally, follow these steps:
    Navigate to your project directory and initialize Elastic Beanstalk:
 
    ```bash
-   eb init
+   eb init -p docker -r <region> <project_name>
    ```
 
-   Follow the prompts to set up your application. Choose the appropriate region and select the platform (e.g., Python).
+   Follow the prompts to set up your application. Choose the appropriate region and project name
 
 3. **Create an Environment and Deploy**:
    Create a new environment and deploy your application:
 
    ```bash
-   eb create <environment-name>
-   eb deploy
+   eb create <project_name> --enable-spot
    ```
 
-   Replace `<environment-name>` with your desired environment name.
+   Replace `<project_name>` with your desired environment name.
 
-4. **Access Your Application**:
-   After deployment, you can access your application using the URL provided by Elastic Beanstalk.
+   ![aws_deploy](images/aws_deploy.PNG)
 
-5. **Update Your Application**:
-   To deploy updates, use the `eb deploy` command again:
+   #### Troubleshooting
 
-   ```bash
-   eb deploy
-   ```
+   - **Load Balancer Configuration**
 
-6. **Terminate the Environment**:
+     - Error Message: **"At least two subnets in two different Availability Zones must be specified..."**
+     - Elastic Beanstalk is configured to use a load balancer, but it requires at least two subnets in two different AZs to distribute traffic properly.
+
+   - **Subnet Issue**
+     - Error Message: **"No default subnet for availability zone: 'eu-west-2a'"**
+     - The environment is attempting to create an auto-scaling group, but it cannot find a valid subnet in the specified AZ (eu-west-2a).
+     - This typically happens when:
+       - Your VPC does not have subnets in the specified AZ.
+       - There’s no default subnet configured for the region.
+
+     **Solution Steps**
+
+     1. Verify Default Subnets
+        To confirm the existing default subnets in your VPC:
+
+        **AWS CLI**: Run the following command to list subnets:
+
+        ```bash
+        aws ec2 describe-subnets --filters Name=default-for-az,Values=true
+        ```
+
+        This will display all the default subnets in your VPC.
+
+     2. Configure Elastic Beanstalk with the Correct Subnets
+
+        ```bash
+        aws elasticbeanstalk update-environment \
+        --environment-name `<project_name>` \
+        --option-settings file://options.json
+        ```
+
+        Create an options.json file with subnet settings (add your subnets ids):
+
+        ```json
+        [
+            {
+                "Namespace": "aws:ec2:vpc",
+                "OptionName": "Subnets",
+                "Value": "subnet-XXXXXXX,subnet-XXXXXXX"
+            }
+        ]
+        ```
+
+4. **Terminate the Environment**:
    When you are done, you can terminate the environment to stop incurring charges:
 
    ```bash
    eb terminate <environment-name>
    ```
 
-> **Note:** Ensure your `Dockerrun.aws.json` or `Dockerfile` is correctly configured for Elastic Beanstalk.
-
-#### Running Remotely
-
-To deploy the project on AWS Elastic Beanstalk remotely and resolve common errors, follow these steps:
-
-1. **Create a Launch Template in the AWS EC2 Console**:
-   - Go to the EC2 Console in your AWS account.
-   - In the left-hand menu, choose Launch Templates (under Instances).
-   - Select Create launch template and fill in the required fields:
-     - Launch Template Name: Use something identifiable, like `eb-launch-template`.
-     - AMI ID: Select a compatible Amazon Linux 2 AMI.
-     - Instance Type: Choose an instance type that suits your application needs (e.g., `t2.micro`).
-   - Click Create launch template and note the Launch Template ID (e.g., `lt-0abcdef1234567890`).
-
-2. **Configure Elastic Beanstalk to Use the Launch Template**:
-   - In your Elastic Beanstalk project directory, create or open the `.ebextensions` folder.
-   - In `.ebextensions`, create a configuration file named `00_launch_template.config` with the following YAML code:
-
-   ```yaml
-   Resources:
-     AWSEBAutoScalingGroup:
-       Type: AWS::AutoScaling::AutoScalingGroup
-       Properties:
-         MixedInstancesPolicy:
-           InstancesDistribution:
-             OnDemandPercentageAboveBaseCapacity: 100
-           LaunchTemplate:
-             LaunchTemplateSpecification:
-               LaunchTemplateId: "lt-XXXXXXXXX"  # Replace with your Launch Template ID
-               Version: "1"  # Use the appropriate version of your template
-   ```
-
-   - Replace `lt-0abcdef1234567890` with your actual Launch Template ID from Step 1.
-   - Save the file, ensuring it is in the project root folder.
-
-3. **Deploy or Re-create Your Elastic Beanstalk Environment**:
-   - If the environment already exists, you can update it with this new configuration:
-
-   ```bash
-   eb deploy
-   ```
-
-   - Alternatively, if you need to re-create the environment, terminate the current one (if any) and create a new one:
-
-   ```bash
-   eb terminate <environment-name>  # Only if you need to delete the existing environment
-   eb create <new-environment-name>
-   ```
-
-   This configuration should allow Elastic Beanstalk to deploy without attempting to use the deprecated Launch Configuration, solving the Auto Scaling Launch Configuration failed errors.
+![aws_deploy](images/success_aws.PNG)
 
 ### Testing the Model
 
 Open a new terminal and run the test script:
 
 ```bash
-    python tests/test_predict.py    
+    python tests/test_predict.py   # to test locally 
+    python tests/test_predict_aws.py # to test aws 
 ```
 
-To use the prediction service, send a POST request to the /predict endpoint with the following JSON payload:
+To use the prediction service, send a POST request to the /predict endpoint with the following JSON payload locally or configure the test script accordantly:
 
 ```bash
 curl -X POST http://127.0.0.1:9696/predict \
@@ -319,6 +305,7 @@ curl -X POST http://127.0.0.1:9696/predict \
            "date": "2024-12-16"
          }'
 ```
+
 
 ### Running the Streamlit App (Bonus)
 
